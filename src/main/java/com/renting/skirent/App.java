@@ -7,6 +7,9 @@ import com.renting.skirent.repository.EquipmentRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+
+import java.util.Scanner;
 
 @SpringBootApplication
 public class App {
@@ -39,4 +42,10 @@ public class App {
 
         equipmentRepository.save(skis);
     }
+
+    @Bean
+    Scanner scanner(){
+        return new Scanner(System.in);
+    }
+
 }
