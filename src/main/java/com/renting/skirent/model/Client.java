@@ -16,9 +16,9 @@ public class Client {
     private String firstName;
     @Column(name ="last_name")
     private String lastName;
-    @Column(length = 11)
+    @Column(length = 11, unique = true)
     private String pesel;
-    @Column(name = "phone_number", length = 9)
+    @Column(name = "phone_number", length = 9, unique = true)
     private String contactNumber;
     @ManyToMany(mappedBy = "clients")
     private List<Equipment> rentedEquipment = new ArrayList<>();
