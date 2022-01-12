@@ -51,5 +51,4 @@ public class Category {
         this.equipmentSet = equipmentSet;
     }
 
-
 }

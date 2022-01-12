@@ -71,4 +71,5 @@ public class Client {
         this.rentedEquipment = rentedEquipment;
     }
 
+
 }
