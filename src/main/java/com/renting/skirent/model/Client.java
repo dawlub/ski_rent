@@ -20,7 +20,7 @@ public class Client {
     private String pesel;
     @Column(name = "phone_number", length = 9, unique = true)
     private String contactNumber;
-    @ManyToMany(mappedBy = "clients")
+    @ManyToMany(mappedBy = "clients", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Equipment> rentedEquipment = new ArrayList<>();
 
     public Long getId() {

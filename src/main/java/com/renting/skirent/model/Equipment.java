@@ -94,4 +94,14 @@ public class Equipment {
         clients.add(client);
     }
 
+    @Override
+    public String toString() {
+        return "Equipment {" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", amount=" + amount +
+                ", price=" + price +
+                ", size='" + size + '\'' +
+                '}';
+    }
 }

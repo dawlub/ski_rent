@@ -6,6 +6,8 @@ import com.renting.skirent.repository.CategoryRepository;
 import com.renting.skirent.repository.EquipmentRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -22,10 +24,13 @@ public class EquipmentController {
         this.categoryRep = categoryRep;
     }
 
+    //I have to use transactional because I'm trying to use lazy data after closing transaction,
+    // and it's providing to exception
+    @Transactional
     public void createEquipment(){
         Equipment equipment = readEquipment();
         equipmentRep.save(equipment);
-        System.out.printf("Equipment '%s' has been created:", equipment.getName());
+        System.out.printf("Equipment '%s' has been created:\n", equipment.getName());
 
     }
 
@@ -36,22 +41,23 @@ public class EquipmentController {
         equipment.setName(scanner.nextLine());
 
         System.out.println("Description of equipment:");
-        equipment.setName(scanner.nextLine());
+        equipment.setDescription(scanner.nextLine());
 
         System.out.println("Equipment price:");
         equipment.setPrice(scanner.nextDouble());
+        scanner.nextLine();
 
-        equipment.setName("Size:");
+        System.out.println("Size:");
         equipment.setSize(scanner.nextLine());
 
         System.out.println("Amount:");
-        equipment.setName(scanner.nextLine());
+        equipment.setAmount(scanner.nextInt());
+        scanner.nextLine();
 
         System.out.println("Category: ");
-        long id = scanner.nextLong();
-        Optional<Category> category = categoryRep.findById(id);
-        scanner.nextLine();
-        category.ifPresentOrElse(equipment::setCategory, () -> System.out.printf("Kategoria o id %d nie istnieje ", id));
+        String catName = scanner.nextLine();
+        Optional<Category> category = categoryRep.findByNameIgnoreCase(catName);
+        category.ifPresentOrElse(equipment::setCategory, () -> System.out.printf("Kategoria %s nie istnieje", catName));
         return equipment;
     }
 
@@ -60,7 +66,29 @@ public class EquipmentController {
         long id = scanner.nextLong();
 
         Optional<Equipment> equipment = equipmentRep.findById(id);
-        equipment.ifPresentOrElse(equipmentRep::delete, () -> System.out.printf("Equipment with id %d not found", id));
+        equipment.ifPresentOrElse(equipmentRep::delete, () -> System.out.printf("Equipment with id %d not found\n", id));
+    }
+
+    @Transactional
+    public void searchEquipment(){
+        System.out.println("Provide category:");
+        String catName = scanner.nextLine();
+
+        System.out.println("Provide size:");
+        String size = scanner.nextLine();
+
+        Category category = categoryRep.findByNameContaining(catName);
+
+        if(category != null){
+            List<Equipment> list = equipmentRep.findAllByCategoryAndSize(category, size);
+
+            if(!list.isEmpty()){
+                list.forEach(System.out::println);
+            }else
+                System.out.println("Equipment with specified size is unavailable");
+        } else
+            System.out.println("Category not exist");
+
     }
 
 }

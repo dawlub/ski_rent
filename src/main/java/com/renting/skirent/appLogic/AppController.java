@@ -53,7 +53,6 @@ public class AppController  {
         }
     }
 
-
     private void rentReturnSwitch(RentReturnOption rentReturnOption){
         switch (rentReturnOption){
             case RENT_EQUIPMENT -> rentController.rentEquipment();
@@ -79,6 +78,16 @@ public class AppController  {
             case REMOVE_CLIENT -> clientController.remove();
             case REMOVE_CATEGORY -> categoryController.remove();
             case EXIT_TO_MAIN -> mainLoop();
+            default -> throw new InvalidOptionException("Option not found");
+        }
+    }
+
+    private void searchSwitch(SearchOption searchOption){
+        switch (searchOption){
+            case SEARCH_CLIENT_BY_PHONE_NUMBER -> clientController.searchClient();
+            case SEARCH_EQUIPMENT_BY_SIZE_AND_CATEGORY -> equipmentController.searchEquipment();
+            case EXIT_TO_MAIN -> mainLoop();
+            default -> throw new InvalidOptionException("Option not found");
         }
     }
 
@@ -88,7 +97,7 @@ public class AppController  {
         boolean flagOption = false;
 
         while(!flagOption) {
-            System.out.println("Provide number of option:");
+            System.out.println("Provide number of menu option:");
             int id = scanner.nextInt();
 
             try{
@@ -105,7 +114,7 @@ public class AppController  {
         boolean flagOption = false;
 
         while(!flagOption) {
-            System.out.println("Provide number of option:");
+            System.out.println("Provide number of menu option:");
             int id = scanner.nextInt();
             scanner.nextLine();
             try{
@@ -123,7 +132,7 @@ public class AppController  {
         boolean flagOption = false;
 
         while(!flagOption) {
-            System.out.println("Provide number of option:");
+            System.out.println("Provide number  of add option:");
             int id = scanner.nextInt();
             scanner.nextLine();
 
@@ -142,12 +151,30 @@ public class AppController  {
         boolean flagOption = false;
 
         while(!flagOption) {
-            System.out.println("Provide number of option:");
+            System.out.println("Provide number of delete option:");
             int id = scanner.nextInt();
             scanner.nextLine();
 
             try{
                 option = RemoveOption.checkOption(id);
+                flagOption = true;
+            }catch (InvalidOptionException e){
+                System.err.println(e);
+            }
+        }
+        return option;
+    }
+    private SearchOption readSearchOption(){
+        SearchOption option = null;
+        boolean flagOption = false;
+
+        while(!flagOption) {
+            System.out.println("Provide number of search option:");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            try{
+                option = SearchOption.checkOption(id);
                 flagOption = true;
             }catch (InvalidOptionException e){
                 System.err.println(e);
@@ -185,6 +212,12 @@ public class AppController  {
     }
 
     private void searchByNameLoop() {
+        SearchOption option;
+        do{
+            SearchOption.printOption();
+            option = readSearchOption();
+            searchSwitch(option);
+        }while (option != SearchOption.EXIT_TO_MAIN);
     }
 
 

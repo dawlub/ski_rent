@@ -17,6 +17,7 @@ public class App {
         ConfigurableApplicationContext run = SpringApplication.run(App.class, args);
         AppController bean = run.getBean(AppController.class);
         bean.mainLoop();
+
     }
 
     @Bean

@@ -3,8 +3,10 @@ package com.renting.skirent.controller;
 
 import com.renting.skirent.model.Category;
 import com.renting.skirent.repository.CategoryRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -24,8 +26,12 @@ public class CategoryController {
      */
     public void createCategory(){
         Category category = readCategory();
-        repository.save(category);
-        System.out.printf("Category '%s' has been created:", category.getName());
+        try {
+            repository.save(category);
+            System.out.printf("Category '%s' has been created:\n", category.getName());
+        }catch (DataIntegrityViolationException e){
+            System.err.println("Category already exist");
+        }
     }
 
     /*
@@ -53,6 +59,13 @@ public class CategoryController {
         category.ifPresentOrElse(repository::delete, () -> System.out.println("There is no category with id " + id));
 
     }
+
+//    public void searchCategory(){
+//        System.out.println("Provide name of category:");
+//        String categoryName = scanner.nextLine();
+//        Category category = repository.findByNameContaining(categoryName);
+//        equi
+//    }
 
 
 }

@@ -37,17 +37,19 @@ public class RentController {
     }
 
     private void returnOfEquipment(){
-        System.out.println("Provide client ID");
-        long clientId = scanner.nextLong();
+        System.out.println("Provide client phone number");
+        String number = scanner.nextLine();
 
-        Optional<Client> client = clientRepository.findById(clientId);
+
+        Optional<Client> client = Optional.ofNullable(clientRepository.findByContactNumber(number));
 
         if(client.isPresent()){
             List<Equipment> list = client.get().getRentedEquipment();
 
             if(list.size() > 0){
+                System.out.println("Equipment in rent");
                 for (Equipment equipment : list) {
-                    System.out.printf(" id: %d, name: %s\n",equipment.getId(), equipment.getName()) ;
+                    System.out.printf("id: %d, name: %s\n",equipment.getId(), equipment.getName()) ;
                 }
 
                 System.out.println("Provide ID of goods for return:");
@@ -66,9 +68,9 @@ public class RentController {
                 }else
                     throw new IdNotFoundException(String.format("No %d id of equipment in client rental list", equipmentId));
             }else
-                throw new NoRentalsException(String.format("Client %d have nothing to return", clientId));
+                throw new NoRentalsException(String.format("Client %s %s have nothing to return", client.get().getFirstName(), client.get().getLastName()));
         } else
-            throw new IdNotFoundException(String.format("No client with %s id", clientId));
+            throw new IdNotFoundException(String.format("No client with %s phone number", number));
     }
 
     @Transactional
@@ -82,13 +84,13 @@ public class RentController {
     }
 
     private void rent() {
-        System.out.println("Provide client ID");
-        long clientId = scanner.nextLong();
+        System.out.println("Provide client phone number");
+        String number = scanner.nextLine();
 
         System.out.println("Provide equipment ID");
         long equipmentId = scanner.nextLong();
 
-        Optional<Client> client = clientRepository.findById(clientId);
+        Optional<Client> client = Optional.ofNullable(clientRepository.findByContactNumber(number));
         Optional<Equipment> equipment = equipmentRepository.findById(equipmentId);
 
        if(client.isPresent()){
@@ -102,7 +104,11 @@ public class RentController {
            }else
                throw new IdNotFoundException(String.format("No equipment with %s id", equipmentId));
        }else
-           throw new IdNotFoundException(String.format("No client with %s id", clientId));
+           throw new IdNotFoundException(String.format("No client with %s phone number", number));
+
+        System.out.printf("%s has been rented for %s\n",equipment.get().getName(), client.get().getFirstName());
+        System.out.printf("Amount to pay %f\n", equipment.get().getPrice());
     }
+
 
 }

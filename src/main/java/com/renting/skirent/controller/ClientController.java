@@ -25,7 +25,7 @@ public class ClientController {
     public void createClient(){
         Client client = readClient();
         repository.save(client);
-        System.out.printf("Client %s %s has been added%n", client.getFirstName(), client.getLastName());
+        System.out.printf("Client %s %s has been added\n", client.getFirstName(), client.getLastName());
     }
 
 
@@ -59,6 +59,17 @@ public class ClientController {
         long id = scanner.nextLong();
         Optional<Client> client = repository.findById(id);
         client.ifPresentOrElse(repository::delete, ()-> System.out.println("There is no client with id " + id));
+    }
+
+    public void searchClient(){
+        System.out.println("Provide client phone number:");
+        String number = scanner.nextLine();
+        Client client = repository.findByContactNumber(number);
+        if(client != null){
+            System.out.printf("id %d, %s, %s, %s\n", client.getId(), client.getFirstName(), client.getLastName(), client.getContactNumber());
+            client.getRentedEquipment().forEach(System.out::println);
+        } else
+            System.out.println("No client with phone number: " + number);
     }
 
 }
