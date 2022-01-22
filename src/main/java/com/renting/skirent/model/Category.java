@@ -51,4 +51,8 @@ public class Category {
         this.equipmentSet = equipmentSet;
     }
 
+    @Override
+    public String toString() {
+        return "Name '" + name + "' description: " + description;
+    }
 }

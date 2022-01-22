@@ -96,10 +96,9 @@ public class Equipment {
 
     @Override
     public String toString() {
-        return "Equipment {" +
-                "name='" + name + '\'' +
+        return "Equipment {id="+id+
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", amount=" + amount +
                 ", price=" + price +
                 ", size='" + size + '\'' +
                 '}';

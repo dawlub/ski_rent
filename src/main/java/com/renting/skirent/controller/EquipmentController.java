@@ -77,17 +77,48 @@ public class EquipmentController {
         System.out.println("Provide size:");
         String size = scanner.nextLine();
 
-        Category category = categoryRep.findByNameContaining(catName);
+        Optional<Category> category = categoryRep.findCategoryByNameContains(catName);
 
-        if(category != null){
+        if(category.isPresent()){
             List<Equipment> list = equipmentRep.findAllByCategoryAndSize(category, size);
 
             if(!list.isEmpty()){
-                list.forEach(System.out::println);
+                list.forEach(x -> System.out.printf("%s  available amount %d\n", x.toString(), x.getAmount() - x.getClients().size()));
             }else
                 System.out.println("Equipment with specified size is unavailable");
         } else
             System.out.println("Category not exist");
+
+    }
+    @Transactional
+    public void rentedEquipment() {
+        List<Equipment> inRent = equipmentRep.findAllByClientsIsNotNull();
+
+        if(inRent.isEmpty()){
+            System.out.println("No equipment in rent:");
+        }else {
+            System.out.println("Equipment in rent:");
+            inRent.forEach(x -> System.out.printf("%s  quantity in rent %d\n", x.toString(), x.getClients().size()));
+        }
+    }
+
+    public void updateEquipment(){
+        System.out.println("Provide name of the equipment for update:");
+        String name = scanner.nextLine();
+        Optional<Equipment> toUpdate = equipmentRep.findByNameContaining(name);
+
+        if(toUpdate.isPresent()){
+            Equipment toSet = toUpdate.get();
+            Equipment equipment = readEquipment();
+            toSet.setName(equipment.getName());
+            toSet.setDescription(equipment.getDescription());
+            toSet.setAmount(equipment.getAmount());
+            toSet.setPrice(equipment.getPrice());
+            toSet.setSize(equipment.getSize());
+            toSet.setCategory(equipment.getCategory());
+            equipmentRep.save(toSet);
+        } else
+            System.out.printf("Equipment %s not found\n", toUpdate);
 
     }
 

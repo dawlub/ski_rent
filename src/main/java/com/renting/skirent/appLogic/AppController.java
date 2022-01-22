@@ -48,6 +48,7 @@ public class AppController  {
             case ADD -> addLoop();
             case REMOVE -> removeLoop();
             case SEARCH_BY_NAME -> searchByNameLoop();
+            case UPDATE_DATA -> updateOption();
             case EXIT -> exit();
             default -> throw new InvalidOptionException("Main option not found");
         }
@@ -86,8 +87,19 @@ public class AppController  {
         switch (searchOption){
             case SEARCH_CLIENT_BY_PHONE_NUMBER -> clientController.searchClient();
             case SEARCH_EQUIPMENT_BY_SIZE_AND_CATEGORY -> equipmentController.searchEquipment();
+            case PRINT_EQUIPMENT_IN_RENT -> equipmentController.rentedEquipment();
+            case PRINT_ALL_CATEGORIES -> categoryController.printAll();
             case EXIT_TO_MAIN -> mainLoop();
             default -> throw new InvalidOptionException("Option not found");
+        }
+    }
+
+    private void updateSwitch(UpdateOption updateOption){
+        switch (updateOption){
+            case UPDATE_EQUIPMENT -> equipmentController.updateEquipment();
+            case UPDATE_CLIENT -> clientController.updateClient();
+            case UPDATE_CATEGORY -> categoryController.updateData();
+            case EXIT_TO_MAIN -> mainLoop();
         }
     }
 
@@ -182,6 +194,24 @@ public class AppController  {
         }
         return option;
     }
+    private UpdateOption readUpdateOption(){
+        UpdateOption option = null;
+        boolean flagOption = false;
+
+        while(!flagOption) {
+            System.out.println("Provide number of update option:");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            try{
+                option = UpdateOption.checkOption(id);
+                flagOption = true;
+            }catch (InvalidOptionException e){
+                System.err.println(e);
+            }
+        }
+        return option;
+    }
 
 
     private void rentReturnLoop() {
@@ -218,6 +248,15 @@ public class AppController  {
             option = readSearchOption();
             searchSwitch(option);
         }while (option != SearchOption.EXIT_TO_MAIN);
+    }
+
+    private void updateOption(){
+        UpdateOption option;
+        do{
+            UpdateOption.printOption();
+            option = readUpdateOption();
+            updateSwitch(option);
+        }while (option != UpdateOption.EXIT_TO_MAIN);
     }
 
 

@@ -53,19 +53,32 @@ public class CategoryController {
     Method for removing category from db
      */
     public void remove(){
-        System.out.println("Provide id of category to remove:");
-        long id = scanner.nextLong();
-        Optional<Category> category = repository.findById(id);
-        category.ifPresentOrElse(repository::delete, () -> System.out.println("There is no category with id " + id));
+        System.out.println("Provide name of category to remove:");
+        String name = scanner.nextLine();
+        Optional<Category> category = Optional.ofNullable(repository.findByNameContaining(name));
+        category.ifPresentOrElse(repository::delete, () -> System.out.println("There is no category with name " + name));
 
     }
 
-//    public void searchCategory(){
-//        System.out.println("Provide name of category:");
-//        String categoryName = scanner.nextLine();
-//        Category category = repository.findByNameContaining(categoryName);
-//        equi
-//    }
+    public void updateData(){
+        System.out.println("Provide name of category for update");
+        String name = scanner.nextLine();
+        Optional<Category> cateName = repository.findByNameIgnoreCase(name);
 
+        if(cateName.isPresent()){
+            System.out.println("Provide new properties for this category: ");
+            Category category = readCategory();
+            cateName.get().setName(category.getName());
+            cateName.get().setDescription(category.getDescription());
+            repository.save(cateName.get());
+        }else
+            System.out.println("Category with specified name not exist: " + name);
 
+    }
+
+    public void printAll() {
+        System.out.println("All names of categories:");
+        List<Category> all = repository.findAll();
+        all.forEach(System.out::println);
+    }
 }

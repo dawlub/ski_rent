@@ -10,7 +10,8 @@ public enum MainOptions  {
     ADD(2,"Add data"),
     REMOVE(3,"Remove data"),
     SEARCH_BY_NAME(4,"Search by name"),
-    EXIT(5,"Exit");
+    UPDATE_DATA(5, "Update data"),
+    EXIT(6,"Exit");
 
     private int number;
     private String name;

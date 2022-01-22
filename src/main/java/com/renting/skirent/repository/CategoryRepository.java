@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Category findByNameContaining(String name);
+    Optional<Category> findCategoryByNameContains(String name);
     Optional<Category> findByNameIgnoreCase(String name);
 }

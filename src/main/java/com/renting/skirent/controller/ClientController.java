@@ -72,4 +72,21 @@ public class ClientController {
             System.out.println("No client with phone number: " + number);
     }
 
+    public void updateClient(){
+        System.out.println("Provide client phone number:");
+        String number = scanner.nextLine();
+        Client toChange = repository.findByContactNumber(number);
+
+        if(toChange != null){
+            Client changed = readClient();
+            toChange.setFirstName(changed.getFirstName());
+            toChange.setLastName(changed.getLastName());
+            toChange.setPesel(changed.getPesel());
+            toChange.setContactNumber(changed.getContactNumber());
+            repository.save(toChange);
+        }else
+            System.out.printf("Number %s not found\n", number);
+
+    }
+
 }

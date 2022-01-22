@@ -64,6 +64,7 @@ public class RentController {
 
                     //Remove client form equipment clients list
                     equipment.get().getClients().remove(client.get());
+                    System.out.println("Equipment has been returned.");
 
                 }else
                     throw new IdNotFoundException(String.format("No %d id of equipment in client rental list", equipmentId));
@@ -107,7 +108,7 @@ public class RentController {
            throw new IdNotFoundException(String.format("No client with %s phone number", number));
 
         System.out.printf("%s has been rented for %s\n",equipment.get().getName(), client.get().getFirstName());
-        System.out.printf("Amount to pay %f\n", equipment.get().getPrice());
+        System.out.printf("Amount to pay %.2f\n", equipment.get().getPrice());
     }
 
 
