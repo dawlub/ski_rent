@@ -15,7 +15,7 @@ Adding new client
 
 ![alt text](https://github.com/dawlub/Screens/blob/main/Adding.png?raw=true)
 
-Searching by category and size
+Searching equipment by category and size
 
 ![alt text](https://github.com/dawlub/Screens/blob/main/SearchShoes.png?raw=true)
 
