@@ -9,7 +9,7 @@ public enum MainOptions  {
     RENT_RETURN(1,"Rent or return"),
     ADD(2,"Add data"),
     REMOVE(3,"Remove data"),
-    SEARCH_BY_NAME(4,"Search by name"),
+    SEARCH_BY_NAME(4,"Search"),
     UPDATE_DATA(5, "Update data"),
     EXIT(6,"Exit");
 

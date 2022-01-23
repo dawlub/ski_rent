@@ -2,6 +2,7 @@ package com.renting.skirent.controller;
 
 import com.renting.skirent.model.Client;
 import com.renting.skirent.repository.ClientRepository;
+import org.apache.tomcat.util.net.jsse.JSSEUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -41,24 +42,62 @@ public class ClientController {
         System.out.println("Provide lastname of the client:");
         client.setLastName(scanner.nextLine());
 
-        System.out.println("Provide pesel:");
-        client.setPesel(scanner.nextLine());
+        String pesel = readPesel();
+        client.setPesel(pesel);
 
-        System.out.println("Contact number:");
-        client.setContactNumber(scanner.nextLine());
+        String number = readNumber();
+        client.setContactNumber(number);
 
-       return client;
+        return client;
 
+    }
+
+    private String readPesel() {
+        System.out.println("Provide pesel (should consist of 11 digits):");
+        do {
+            String pesel = scanner.nextLine();
+            if (pesel.length() == 11) {
+                boolean contains = pesel.matches("[0-9]+");
+                if (contains) {
+                    Client client = repository.findByContactNumber(pesel);
+                    if (client != null)
+                        System.out.println("Client with this pesel already exist!\nTry again:");
+                    else
+                        return pesel;
+                } else
+                    System.out.println("Pesel should contains only digits!\nTry again:");
+            } else
+                System.out.println("Pesel should contains 11 digits!\nTry again:");
+        }while (true);
+    }
+
+    private String readNumber() {
+        System.out.println("Contact number (should consist of 9 digits):");
+        do {
+            String number = scanner.nextLine();
+            if (number.length() == 9) {
+                boolean contains = number.matches("[0-9]+");
+                if (contains) {
+                    Client client = repository.findByContactNumber(number);
+                    if (client != null)
+                        System.out.println("Client with this number already exist!\nTry again:");
+                    else
+                        return number;
+                }else
+                    System.out.println("Number should contains only digits!\nTry again:");
+            }else
+                System.out.println("Number should contains 9 digits!\nTry again:");
+        }while(true);
     }
 
     /*
     Method for removing client from db
      */
     public void remove(){
-        System.out.println("Provide id of the client to remove:");
-        long id = scanner.nextLong();
-        Optional<Client> client = repository.findById(id);
-        client.ifPresentOrElse(repository::delete, ()-> System.out.println("There is no client with id " + id));
+        System.out.println("Provide phone number of the client to remove:");
+        String number = scanner.nextLine();
+        Optional<Client> client = repository.findByContactNumberContaining(number);
+        client.ifPresentOrElse(repository::delete, ()-> System.out.println("There is no client with id " + number));
     }
 
     public void searchClient(){
