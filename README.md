@@ -13,19 +13,19 @@ Below some operations has been shown on screens:
 
 Adding new client
 
-![alt text](https://github.com/dawlub/Screens/blob/main/Adding.png?raw=true)
+![Private picture](https://github.com/dawlub/Screens/blob/main/Adding.png?raw=true)
 
 Searching equipment by category and size
 
-![alt text](https://github.com/dawlub/Screens/blob/main/SearchShoes.png?raw=true)
+![Private picture](https://github.com/dawlub/Screens/blob/main/SearchShoes.png?raw=true)
 
 Renting for client
 
-![alt text](https://github.com/dawlub/Screens/blob/main/renting.png?raw=true)
+![Private picture](https://github.com/dawlub/Screens/blob/main/renting.png?raw=true)
 
 Returning to store
 
-![alt text](https://github.com/dawlub/Screens/blob/main/return.png?raw=true)
+![Private picture](https://github.com/dawlub/Screens/blob/main/return.png?raw=true)
 
 
 ## Technologies
